@@ -30,7 +30,9 @@ class coinQueue{
     }
     void tick(){     
       if(numToDo <= 0){ //if the queue is empty, put timer at max value
-        timer = 375;
+        timer = 0; //set to zero, so that when a button is pressed and numToDo goes up, the servo position automatically goes to the outward position. when it goes into the else right bellow
+        servPos = false;
+        moveServo();
       } else {    //if queueu as stuff in it
         timer--;    //decrement timer
         if(timer <= 0 ){  //if timer has run out, reset timer, decrease the num to do, and flip the servo position
