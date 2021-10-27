@@ -3,38 +3,37 @@
 using namespace std;
 
 //declare used class
-
 class coinQueue{
-  private:
-    Servo* myServo;
-    int timer;
-    int numToDo;  
-    bool servPos; 
+  private: 
+    Servo* myServo;//holds servo
+    int timer;     // default value 375, count down;
+    int numToDo;  // this will be 2 times the button presses. If you want 4 coins dispensed, this number will start at 8
+    bool servPos; //true  means pushed, false means not pushed in
   public:
-    coinQueue(){
+    coinQueue(){ //default constructor
       timer = 375;
       numToDo = 0;
     }
-    void attach(Servo* aServo){
+    void attach(Servo* aServo){ //constructor helper function, this function should not be used, I should probabbly make this private
       myServo = aServo;
     }
-    void addCount(){
+    void addCount(){  //funciton caled when the button is pressed, it only adds. 
       numToDo++;
       numToDo++;
     }
-    void moveServo(){
+    void moveServo(){   //function called every tick, it will set to the write position based on the servoPos variable. 
       if(servPos == true){
         myServo->write(180);
       }else if (servPos ==false){
         myServo->write(0);
       }
     }
-    void tick(){
-      if(numToDo <= 0){
+    void tick(){     
+      if(numToDo <= 0){ //if the queue is empty, put timer at max value
         timer = 375;
-      } else {
-        timer--;
-        if(timer <= 0 ){
+      } else {    //if queueu as stuff in it
+        timer--;    //decrement timer
+        if(timer <= 0 ){  //if timer has run out, reset timer, decrease the num to do, and flip the servo position
           timer = 375;
           numToDo--;
           servPos = !servPos;
@@ -74,6 +73,7 @@ class coinQueue{
   coinQueue penny;
 
 void setup() {
+
   
   pinMode(quarterServoPin, OUTPUT);
   pinMode(dimeServoPin, OUTPUT);
