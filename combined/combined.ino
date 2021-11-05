@@ -209,6 +209,8 @@ int pennyServoPin = A3;
 //declare irRemotePin
 int irSensorPin = 13;
 
+
+
 //declare IRremote class
 IRrecv irrecv(irSensorPin);
 
@@ -265,6 +267,7 @@ void setup()
   dime.attach(dimeServo); 
   nickel.attach(nickelServo);
   penny.attach(pennyServo);
+  irrecv.enableIRIn();
   
   
   Serial.begin(9600);
@@ -293,19 +296,20 @@ void loop()
 
 if (irrecv.decode()) // have we received an IR signal?
   {
+   Serial.println("signal");
    switch(irrecv.decodedIRData.command)
   {
   case 64: coinMath(numDisp.returnNumber(), quarter,dime,nickel,penny); numDisp.clear(); ;    break; // enter
-  case 22: numDisp.enterNumber(0);    break; // 0
-  case 12: numDisp.enterNumber(1);    break; // 1
-  case 24: numDisp.enterNumber(2);    break; // 2
-  case 94: numDisp.enterNumber(3);    break; // 3
-  case 8: numDisp.enterNumber(4);    break;// 4
-  case 28: numDisp.enterNumber(5);    break; // 5
-  case 90: numDisp.enterNumber(6);    break; // 6
-  case 66: numDisp.enterNumber(7);    break; //7
-  case 82: numDisp.enterNumber(8);    break; // 8
-  case 74: numDisp.enterNumber(9);    break; // 9
+  case 22: numDisp.enterNumber(0); Serial.println(0);    break; // 0
+  case 12: numDisp.enterNumber(1); Serial.println(1);    break; // 1
+  case 24: numDisp.enterNumber(2);Serial.println(2);    break; // 2
+  case 94: numDisp.enterNumber(3); Serial.println(3);   break; // 3
+  case 8: numDisp.enterNumber(4); Serial.println(4);   break;// 4
+  case 28: numDisp.enterNumber(5); Serial.println(5);   break; // 5
+  case 90: numDisp.enterNumber(6); Serial.println(6);   break; // 6
+  case 66: numDisp.enterNumber(7);  Serial.println(7);  break; //7
+  case 82: numDisp.enterNumber(8);  Serial.println(8); break; // 8
+  case 74: numDisp.enterNumber(9);  Serial.println(9); break; // 9
  default:     /* do nothing */        ;
     
     
@@ -325,8 +329,14 @@ if (irrecv.decode()) // have we received an IR signal?
     delay(10);
     digitalWrite(i, LOW);
   }
+  /*
+  Serial.println(numDisp.first());
+  Serial.println(numDisp.second()); 
+  Serial.println(numDisp.third());
+  Serial.println(numDisp.fourth());
+  */
 
-   delay(1);
+  
   quarter.tick();
   dime.tick();
   nickel.tick();
