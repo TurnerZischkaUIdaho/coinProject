@@ -40,7 +40,6 @@ class coinQueue{
       } else {    //if queueu as stuff in it
         timer--;    //decrement timer
         if(timer <= 0 ){  //if timer has run out, reset timer, decrease the num to do, and flip the servo position
-          Serial.println("flipping");
           timer = 375;
           numToDo--;
           servPos = !servPos;
@@ -336,7 +335,7 @@ void loop()
   if (irrecv.decode()){ // have we received an IR signal?
      if(irDebouncer.acceptingInput()){
        switch(irrecv.decodedIRData.command){
-          case 64: coinMath(numDisp.returnNumber(), quarter, dime, nickel, penny); numDisp.clear();    break; // enter
+          case 64: coinMath(numDisp.returnNumber(), quarter, dime, nickel, penny); numDisp.clear();  Serial.println("dispense");  break; // enter
           case 22: numDisp.enterNumber(0); Serial.println(0);    break; // 0
           case 12: numDisp.enterNumber(1); Serial.println(1);    break; // 1
           case 24: numDisp.enterNumber(2);Serial.println(2);    break; // 2
@@ -347,6 +346,7 @@ void loop()
           case 66: numDisp.enterNumber(7);  Serial.println(7);  break; //7
           case 82: numDisp.enterNumber(8);  Serial.println(8); break; // 8
           case 74: numDisp.enterNumber(9);  Serial.println(9); break; // 9
+          case 68: numDisp.deleteNumber(); Serial.println("backSpace"); break; // remove last entered number
           default:     /* do nothing */        ;
        }// End Case
        irDebouncer.debounceActive();
