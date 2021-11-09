@@ -250,7 +250,7 @@ IRrecv irrecv(irSensorPin);
 
 //this array maps a number to the 7 segment displays
 //to get the segments for the number 5, call sevenMap[5][<specificc_segment>]
-bool sevenMap[10][7] = { {0,0,0,0,0,0,0}, {0,1,1,0,0,0,0} , {1,1,0,1,1,0,1} ,
+bool sevenMap[10][7] = { {1,1,1,1,1,1,0}, {0,1,1,0,0,0,0} , {1,1,0,1,1,0,1} ,
 {1,1,1,1,0,0,1}, {0,1,1,0,0,1,1} , {1,0,1,1,0,1,1},
                     {1,0,1,1,1,1,1}, {1,1,1,0,0,0,0}, {1,1,1,1,1,1,1},
                     {1,1,1,0,0,1,1}
