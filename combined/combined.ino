@@ -60,6 +60,7 @@ class numberHolder{
     int thousand;
     int previousNum1;
     int previousNum2;
+    int prevNumber;
   public:
     numberHolder(){
       one = 0;
@@ -68,6 +69,7 @@ class numberHolder{
       thousand = 0;
       previousNum1 = 0;
       previousNum2 = 0;
+      prevNumber = 0;
     }
     void enterNumber(int newNumber){ // the limitation of this design is that the old thousand is lost, it cant be brought back
       previousNum2 = previousNum1;
@@ -145,12 +147,16 @@ class numberHolder{
       return ( one + (10 *ten) + (100*hundred) + (1000*thousand));
     }
     void clear(){
+      prevNumber = one + (10 *ten) + (100*hundred) + (1000*thousand);
       one = 0;
       ten = 0;
       hundred = 0;
       thousand = 0;
       previousNum1 = 0;
       previousNum2 = 0;
+    }
+    int getPrevious(){
+      return prevNumber;
     }
 };
 
@@ -276,6 +282,8 @@ bool sevenMap[10][7] = { {1,1,1,1,1,1,0}, {0,1,1,0,0,0,0} , {1,1,0,1,1,0,1} ,
 //declare the debounce timer class for the ir remote
   irTimer irDebouncer;
 
+int danceCount = 4;
+
 
 void setup()
 {
@@ -334,6 +342,7 @@ void loop()
 
   if (irrecv.decode()){ // have we received an IR signal?
      if(irDebouncer.acceptingInput()){
+      Serial.println(irrecv.decodedIRData.command);
        switch(irrecv.decodedIRData.command){
           case 64: coinMath(numDisp.returnNumber(), quarter, dime, nickel, penny); numDisp.clear();  Serial.println("dispense");  break; // enter
           case 22: numDisp.enterNumber(0); Serial.println(0);    break; // 0
@@ -347,6 +356,8 @@ void loop()
           case 82: numDisp.enterNumber(8);  Serial.println(8); break; // 8
           case 74: numDisp.enterNumber(9);  Serial.println(9); break; // 9
           case 68: numDisp.deleteNumber(); Serial.println("backSpace"); break; // remove last entered number
+          case 13: coinMath(numDisp.getPrevious(), quarter, dime, nickel, penny); Serial.println("dispense Previous"); break; // previous number dispense
+          case 71: danceCount = 94; break;
           default:     /* do nothing */        ;
        }// End Case
        irDebouncer.debounceActive();
@@ -365,6 +376,17 @@ void loop()
     digitalWrite(i, HIGH);
     delay(1);  // the clock delay must go between the display, othewise the display is really dim
     digitalWrite(i, LOW);
+  }
+
+  if(danceCount > 0){
+    switch(danceCount){
+      case 94: quarter.addCount(); break;
+      case 70: nickel.addCount();break;
+      case 47: penny.addCount();break;
+      case 24:  dime.addCount();break;
+    }
+    danceCount --;
+    
   }
   /*
   Serial.println(numDisp.first());
